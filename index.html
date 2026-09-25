@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dns Test | Network Doctor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#081119; --bg2:#0c1c28; --card:#0f2130; --border:rgba(45,212,191,.18);
+    --teal:#2dd4bf; --cyan:#22d3ee; --text:#eaf3f2; --muted:#8fa5ab;
+    box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-padding-top:env(safe-area-inset-top,0px);}
+  body{
+    margin:0; background:var(--bg); color:var(--text);
+    font-family:'Vazirmatn', Tahoma, sans-serif;
+    line-height:1.7;
+  }
+  .wrap{max-width:1040px; margin:0 auto; padding:0 24px;}
+  header{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:22px 24px; max-width:1040px; margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; gap:10px;}
+  .dot{width:10px; height:10px; border-radius:50%; background:var(--teal); box-shadow:0 0 12px var(--teal); animation:pulse 2.4s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.5; transform:scale(1.4);}}
+  .brand b{font-size:16px;} .brand span{color:var(--muted); font-size:12px; display:block;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; padding:11px 22px; border-radius:10px;
+    background:linear-gradient(135deg,var(--teal),var(--cyan)); color:#04211d; font-weight:700;
+    text-decoration:none; font-size:14px; border:none; cursor:pointer;
+  }
+  .btn.ghost{background:transparent; border:1px solid var(--border); color:var(--text); font-weight:600;}
+
+  .hero{padding:56px 24px 20px; max-width:1040px; margin:0 auto; text-align:center; position:relative;}
+  .glow{
+    position:absolute; top:-80px; left:50%; transform:translateX(-50%);
+    width:520px; height:280px; background:radial-gradient(ellipse at center, rgba(45,212,191,.25), transparent 70%);
+    filter:blur(10px); pointer-events:none; z-index:0;
+  }
+  .hero h1{
+    font-size:clamp(30px,5.2vw,52px); font-weight:800; margin:0 0 18px; position:relative; z-index:1;
+  }
+  .hero h1 em{font-style:normal; color:var(--teal);}
+  .hero p{color:var(--muted); font-size:16px; max-width:560px; margin:0 auto 30px; position:relative; z-index:1;}
+  .cta-row{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1;}
+
+  .mock{
+    margin:52px auto 0; max-width:900px; background:var(--card); border:1px solid var(--border);
+    border-radius:16px; overflow:hidden; text-align:right;
+  }
+  .mock-head{display:flex; justify-content:space-between; align-items:center; padding:14px 18px; border-bottom:1px solid var(--border);}
+  .mock-head span{font-size:13px; color:var(--muted);}
+  .mock-body{padding:16px 18px;}
+  .row{
+    display:flex; align-items:center; justify-content:space-between; padding:10px 14px; border-radius:10px;
+    border:1px solid var(--border); margin-bottom:8px; font-size:13px;
+  }
+  .row .name{display:flex; align-items:center; gap:8px; font-weight:600;}
+  .badge{width:22px; height:22px; border-radius:6px; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; background:rgba(45,212,191,.15); color:var(--teal);}
+  .row .ping{color:var(--teal); font-weight:700;}
+  .row.scan{position:relative;}
+  .row.scan::after{
+    content:""; position:absolute; inset:0; border-radius:10px;
+    border:1px solid var(--cyan); opacity:0; animation:scan 3.6s ease-in-out infinite;
+  }
+  .row:nth-child(1).scan::after{animation-delay:0s;}
+  .row:nth-child(2).scan::after{animation-delay:.9s;}
+  .row:nth-child(3).scan::after{animation-delay:1.8s;}
+  .row:nth-child(4).scan::after{animation-delay:2.7s;}
+  @keyframes scan{0%{opacity:0;} 8%{opacity:1;} 22%{opacity:0;} 100%{opacity:0;}}
+
+  .stats{display:flex; justify-content:center; gap:14px; flex-wrap:wrap; margin:44px auto 0; max-width:900px;}
+  .stat{flex:1; min-width:130px; text-align:center; padding:18px; border:1px solid var(--border); border-radius:12px; background:var(--card);}
+  .stat b{font-size:26px; color:var(--teal); display:block;}
+  .stat span{color:var(--muted); font-size:13px;}
+
+  .features{max-width:1040px; margin:80px auto 0; padding:0 24px;}
+  .features h2{text-align:center; font-size:26px; margin-bottom:8px;}
+  .features > p{text-align:center; color:var(--muted); margin:0 0 36px; font-size:14px;}
+  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px;}
+  @media (max-width:760px){.grid{grid-template-columns:1fr;} .cta-row{flex-direction:column; align-items:stretch;}}
+  .feat{background:var(--card); border:1px solid var(--border); border-radius:14px; padding:22px;}
+  .feat .ic{width:38px; height:38px; border-radius:10px; background:rgba(45,212,191,.12); color:var(--teal); display:flex; align-items:center; justify-content:center; margin-bottom:14px; font-size:18px;}
+  .feat h3{margin:0 0 8px; font-size:16px;}
+  .feat p{margin:0; color:var(--muted); font-size:13.5px;}
+
+  footer{
+    max-width:1040px; margin:90px auto 0; padding:40px 24px 60px; text-align:center;
+    border-top:1px solid var(--border);
+  }
+  footer h2{font-size:22px; margin-bottom:10px;}
+  footer p{color:var(--muted); font-size:14px; margin-bottom:24px;}
+  footer .note{margin-top:18px; font-size:12px; color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <span class="dot"></span>
+    <div>
+      <b>Dns Test</b>
+      <span>NETWORK DOCTOR</span>
+    </div>
+  </div>
+  <a class="btn ghost" href="#download">دانلود</a>
+</header>
+
+<section class="hero">
+  <div class="glow"></div>
+  <h1>DNS رو <em>سریع‌تر</em> و دقیق‌تر انتخاب کن</h1>
+  <p>اپلیکیشن دسکتاپ ویندوز برای سنجش واقعی DNS، پینگ، و اتصال سرویس‌های بازی — بدون حدس، با عدد.</p>
+  <div class="cta-row">
+    <a class="btn" href="#download">⬇ دانلود نسخه ویندوز</a>
+    <a class="btn ghost" href="#features">دیدن امکانات</a>
+  </div>
+
+  <div class="mock">
+    <div class="mock-head">
+      <span>مقایسه سرورهای DNS</span>
+      <span>google.com</span>
+    </div>
+    <div class="mock-body">
+      <div class="row scan"><span class="name"><span class="badge">BG</span> Begzar</span><span class="ping">۳۵٫۵ میلی‌ثانیه</span></div>
+      <div class="row scan"><span class="name"><span class="badge">EL</span> Electro</span><span class="ping">۵۲٫۶ میلی‌ثانیه</span></div>
+      <div class="row scan"><span class="name"><span class="badge">CF</span> Cloudflare</span><span class="ping">۴۸٫۲ میلی‌ثانیه</span></div>
+      <div class="row scan"><span class="name"><span class="badge">SH</span> Shecan</span><span class="ping">۶۰٫۱ میلی‌ثانیه</span></div>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b>۱۰</b><span>سرویس DNS</span></div>
+    <div class="stat"><b>۷</b><span>پروفایل بازی</span></div>
+    <div class="stat"><b>۱۰۰٪</b><span>سنجش محلی</span></div>
+  </div>
+</section>
+
+<section class="features" id="features">
+  <h2>همه‌چیز برای شبکه‌ای سالم‌تر</h2>
+  <p>یک ابزار، سه کار اصلی</p>
+  <div class="grid">
+    <div class="feat">
+      <div class="ic">◎</div>
+      <h3>تست DNS</h3>
+      <p>ده سرور DNS ایرانی و جهانی رو هم‌زمان محک بزن و بهترینش رو برای دستگاهت پیدا کن.</p>
+    </div>
+    <div class="feat">
+      <div class="ic">▲</div>
+      <h3>تست سرور بازی</h3>
+      <p>وضعیت Steam، PSN، Xbox، Valorant، CS2 و PUBG رو با پینگ و TLS واقعی بررسی کن.</p>
+    </div>
+    <div class="feat">
+      <div class="ic">↯</div>
+      <h3>پینگ و اتصال واقعی</h3>
+      <p>بدون نیاز به باز کردن پورت دستی؛ زمان پاسخ واقعی هر سرویس رو دقیق نشون می‌ده.</p>
+    </div>
+  </div>
+</section>
+
+<footer id="download">
+  <h2>همین حالا شبکه‌ات رو بسنج</h2>
+  <p>رایگان، فقط برای ویندوز، بدون نیاز به نصب اضافه.</p>
+  <a class="btn" href="https://github.com/">⬇ دانلود از گیت‌هاب</a>
+  <div class="note">لینک دانلود به‌زودی به آخرین ریلیز مخزن گیت‌هاب وصل می‌شود.</div>
+</footer>
+
+</body>
+</html>
